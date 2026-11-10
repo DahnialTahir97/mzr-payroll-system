@@ -1,0 +1,21 @@
+<?php
+require_once __DIR__.'/includes/auth.php';require_admin();
+if($_SERVER['REQUEST_METHOD']==='POST'){verify_csrf();$action=$_POST['action']??'';
+if($action==='add'){$code=trim($_POST['employee_code']??'');$name=trim($_POST['full_name']??'');$position=trim($_POST['position']??'');$salary=max(0,(float)($_POST['basic_salary']??0));$status=$_POST['employment_status']??'active';
+if(!$code||!$name||!$position||!in_array($status,['active','inactive'],true)){set_flash('Lengkapkan maklumat wajib.','danger');}
+else{try{$s=$pdo->prepare("INSERT INTO employees(employee_code,full_name,email,phone,position,basic_salary,employment_status) VALUES(?,?,?,?,?,?,?)");$s->execute([$code,$name,trim($_POST['email']??''),trim($_POST['phone']??''),$position,$salary,$status]);set_flash('Pekerja berjaya ditambah.');}catch(PDOException $e){set_flash('Gagal tambah pekerja. Pastikan kod pekerja unik.','danger');}}}
+if($action==='delete'){try{$s=$pdo->prepare("DELETE FROM employees WHERE id=?");$s->execute([(int)$_POST['id']]);set_flash('Rekod pekerja dipadam.');}catch(PDOException $e){set_flash('Pekerja mempunyai rekod berkaitan. Tukar status kepada Tidak Aktif.','danger');}}
+header('Location: employees.php');exit;}
+$rows=$pdo->query("SELECT * FROM employees ORDER BY full_name")->fetchAll();require __DIR__.'/includes/layout.php';page_start('Pengurusan Pekerja','employees');?>
+<div class="page-intro"><div><h2>Pengurusan pekerja</h2><p>Daftar pekerja, kemas kini gaji asas dan status pekerjaan.</p></div></div>
+<div class="row g-4"><div class="col-xl-4"><div class="panel-card"><h3 class="mb-3">Daftar pekerja</h3><form method="post"><input type="hidden" name="csrf_token" value="<?=h(csrf_token())?>"><input type="hidden" name="action" value="add">
+<label class="form-label">Kod pekerja *</label><input class="form-control mb-3" name="employee_code" required>
+<label class="form-label">Nama penuh *</label><input class="form-control mb-3" name="full_name" required>
+<label class="form-label">Jawatan *</label><input class="form-control mb-3" name="position" required>
+<label class="form-label">E-mel</label><input class="form-control mb-3" type="email" name="email">
+<label class="form-label">Telefon</label><input class="form-control mb-3" name="phone">
+<label class="form-label">Gaji asas (RM) *</label><input class="form-control mb-3" type="number" name="basic_salary" min="0" step=".01" required>
+<label class="form-label">Status</label><select class="form-select mb-3" name="employment_status"><option value="active">Aktif</option><option value="inactive">Tidak aktif</option></select><button class="btn btn-primary w-100">Simpan pekerja</button></form></div></div>
+<div class="col-xl-8"><div class="panel-card"><div class="panel-heading"><h3>Senarai pekerja <span class="count-pill"><?=count($rows)?></span></h3><input class="form-control search-box" id="searchEmp" placeholder="Cari pekerja..."></div><div class="table-responsive"><table class="table" id="empTable"><thead><tr><th>Kod</th><th>Nama / jawatan</th><th>Gaji asas</th><th>Status</th><th>Tindakan</th></tr></thead><tbody><?php foreach($rows as $r):?><tr><td><?=h($r['employee_code'])?></td><td><b><?=h($r['full_name'])?></b><small class="d-block muted"><?=h($r['position'])?></small></td><td>RM <?=number_format((float)$r['basic_salary'],2)?></td><td><span class="badge <?=$r['employment_status']==='active'?'bg-success':'bg-secondary'?>"><?=h($r['employment_status'])?></span></td><td><a class="btn btn-sm btn-outline-primary" href="edit_employee.php?id=<?=(int)$r['id']?>">Edit</a><form method="post" class="d-inline" onsubmit="return confirm('Padam rekod pekerja ini?')"><input type="hidden" name="csrf_token" value="<?=h(csrf_token())?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?=(int)$r['id']?>"><button class="btn btn-sm btn-outline-danger">Padam</button></form></td></tr><?php endforeach;?><?php if(!$rows):?><tr><td colspan="5" class="text-center muted">Belum ada pekerja.</td></tr><?php endif;?></tbody></table></div></div></div></div>
+<script>document.getElementById('searchEmp').addEventListener('input',function(){var q=this.value.toLowerCase();document.querySelectorAll('#empTable tbody tr').forEach(function(r){r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';});});</script>
+<?php page_end();?>

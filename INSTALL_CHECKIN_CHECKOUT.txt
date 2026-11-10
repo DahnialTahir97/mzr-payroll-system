@@ -1,0 +1,26 @@
+MZR PAYROLL - CHECK IN / CHECK OUT UPDATE
+
+Fungsi:
+1. Employee boleh Check In sekali sehari.
+2. Employee hanya boleh Check Out selepas Check In.
+3. Masa direkod secara automatik menggunakan zon masa Asia/Kuala_Lumpur.
+4. Employee boleh melihat sejarah kehadiran sendiri.
+5. Manager boleh melihat rekod semua pekerja melalui menu Kehadiran Pekerja.
+6. Admin boleh melihat, menambah, mengedit dan memadam rekod melalui menu Kehadiran & OT.
+
+Pemasangan:
+1. Backup folder projek dan database terlebih dahulu.
+2. Extract kandungan ZIP ini ke C:\xampp\htdocs\mzr_payroll_system.
+3. Replace fail apabila Windows bertanya.
+4. Pastikan jadual attendance sedia ada mempunyai medan:
+   employee_id, attendance_date, check_in, check_out, overtime_hours, status.
+   Struktur ini sepadan dengan modul kehadiran sedia ada dalam projek.
+5. Tiada migration SQL diperlukan untuk fungsi Check In / Check Out ini.
+6. Restart Apache melalui XAMPP Control Panel.
+7. Login sebagai Employee dan cuba Check In. Kemudian login Manager/Admin untuk semak rekod.
+
+Nota:
+- Manager diberi akses paparan sahaja pada halaman attendance.php.
+- Admin sahaja boleh edit atau delete rekod kehadiran dari halaman tersebut.
+- Check In / Check Out merekod masa server. Pastikan jam Windows komputer server betul.
+- Jangan padam backup sehingga semua role berjaya diuji.

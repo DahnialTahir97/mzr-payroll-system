@@ -1,0 +1,32 @@
+MZR PAYROLL - PATCH PEMBETULAN MODUL DAN DASHBOARD
+=================================================
+Pakej ini dibina berdasarkan fail projek payroll_MRZ.zip yang diberikan.
+
+FAIL YANG DIGANTI:
+index.php, attendance.php, components.php, payroll.php, reports.php,
+payslip.php, employees.php, edit_employee.php, employee_portal.php,
+assets/style.css
+
+CARA PASANG:
+1. Tutup browser atau biarkan sahaja.
+2. Backup folder C:\xampp\htdocs\mzr_payroll_system.
+3. Extract ZIP ini.
+4. Copy semua kandungan ZIP ke C:\xampp\htdocs\mzr_payroll_system.
+5. Pilih Replace untuk fail yang sama.
+6. Pastikan Apache dan MySQL berjalan dalam XAMPP.
+7. Buka http://localhost/mzr_payroll_system/
+
+PADANAN NAMA COLUMN:
+employees: employee_code, employment_status
+attendance: attendance_date, check_in, check_out, overtime_hours, status
+salary_components: component_month, component_type, component_name, amount
+payroll: salary_month, overtime_hours, overtime_pay, total_allowance,
+total_deduction, gross_salary, net_salary dan medan statutory yang pernah ditambah.
+
+NOTA PENTING:
+- Pakej ini tidak menjalankan SQL dan tidak memadam data.
+- Modul payroll mengemas kini rekod bagi pekerja/bulan sama supaya rekod tidak berganda.
+- Kiraan KWSP 11%, PERKESO 0.15% (anggaran berdasarkan arahan pengguna), SIP 0.2% digunakan sebagai tetapan ringkas.
+- Kiraan majikan KWSP ialah peratus ringkas. PERKESO majikan dan PCB belum dikira dengan jadual rasmi.
+- Oleh itu, semak dan sahkan semua amaun sebelum pembayaran atau mengeluarkan payslip rasmi.
+- PHP syntax lint telah lulus untuk semua fail yang diganti. Sambungan sebenar perlu diuji pada XAMPP dan database pengguna.

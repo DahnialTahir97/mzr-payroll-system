@@ -1,0 +1,32 @@
+MZR PAYROLL - ROLE EMPLOYEE / MANAGER / ADMIN
+
+FUNGSI:
+- Employee: hanya portal slip gaji sendiri. Hanya slip dengan status APPROVED dipaparkan dan boleh dicetak.
+- Manager: dashboard pemantauan, semak slip, Sahkan atau Tolak. Tidak boleh mengubah data pekerja, kehadiran, elaun, payroll atau laporan admin.
+- Admin: fungsi admin sedia ada dikekalkan.
+
+CARA PASANG:
+1. Tutup tab sistem dan BACKUP folder mzr_payroll_system serta database mzr_payroll_db.
+2. Extract kandungan ZIP ini ke C:\xampp\htdocs\mzr_payroll_system dan pilih Replace/Overwrite untuk fail yang sama.
+3. Buka phpMyAdmin > pilih database mzr_payroll_db > Import > pilih MIGRATION_MANAGER_APPROVAL.sql.
+   Jalankan sekali sahaja. SQL ini menambah approval_status, approved_by dan approved_at pada payroll.
+4. Pastikan jadual users mempunyai kolum: id, username, password_hash, full_name, role, employee_id.
+   Role yang digunakan: admin, manager, employee.
+   Jika role enum belum menyokong manager/employee, jalankan juga MIGRATION_LOGIN_ROLE.sql yang sedia ada dalam projek.
+5. Akaun employee mesti mempunyai employee_id yang sama dengan employees.id. Pastikan satu akaun pekerja dipautkan kepada seorang pekerja.
+6. Cipta akaun manager dalam users dengan role='manager'. Password perlu disimpan menggunakan password_hash() PHP, bukan plain text.
+7. Buka semula sistem dan login:
+   - Admin -> index.php (dashboard admin)
+   - Manager -> manager_portal.php (semak dan sahkan slip)
+   - Employee -> employee_portal.php (slip sendiri yang telah disahkan sahaja)
+
+ALIRAN:
+Admin jana/kemas kini payroll -> status automatik PENDING.
+Manager semak slip -> klik Sahkan atau Tolak.
+Employee hanya nampak slip yang statusnya APPROVED.
+
+PENTING:
+- Jika payroll dikira semula, status pengesahan akan kembali kepada PENDING supaya Manager perlu semak semula angka terkini.
+- Migration ini tidak memadam data payroll.
+- Uji dahulu dengan satu akaun bagi setiap role.
+- Simpan backup sebelum pemasangan. ZIP ini ialah patch untuk projek sedia ada, bukan salinan penuh sistem.

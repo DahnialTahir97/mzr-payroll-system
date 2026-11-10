@@ -1,0 +1,77 @@
+MZR FOOD SERVICES - LOGIN FIX & AKSES WIFI BERLAINAN
+===================================================
+
+BAHAGIAN A - BETULKAN LOGIN (KOMPUTER DAN TELEFON)
+
+Punca error telefon sebelum ini:
+login.php mencari column `password_hash`, sedangkan jadual users anda mempunyai column `password`.
+
+Cara pasang:
+1. Backup fail berikut:
+   C:\xampp\htdocs\mzr_payroll_system\login.php
+2. Extract ZIP ini.
+3. Copy login.php daripada ZIP.
+4. Paste ke:
+   C:\xampp\htdocs\mzr_payroll_system\
+5. Pilih Replace.
+6. Jangan jalankan SQL dan jangan padam jadual users.
+7. Cuba login semula menggunakan akaun sedia ada.
+
+Fail login baharu mengesan sama ada jadual users menggunakan `password` atau
+`password_hash`. Ia menyokong password hash dan password lama plain text untuk
+keserasian. Jika password lama plain text digunakan bersama column password_hash,
+login akan menukarkannya kepada hash selepas login berjaya.
+
+Jadual users masih perlu mempunyai column: id, username, role.
+Akaun employee juga perlu mempunyai employee_id yang dipautkan kepada employees.id.
+Role yang disokong: admin, manager, employee.
+
+BAHAGIAN B - AKSES DARI WIFI / LOKASI BERLAINAN
+
+PENTING:
+Alamat 192.168.1.104 ialah alamat rangkaian tempatan. Ia hanya berfungsi dalam
+rangkaian rumah/pejabat yang sama. Ia TIDAK boleh digunakan apabila telefon/laptop
+berada pada Wi-Fi tempat lain.
+
+PILIHAN YANG DISYORKAN UNTUK AKSES JARAK JAUH: TAILSCALE VPN
+Ini membolehkan peranti yang dibenarkan berhubung secara peribadi tanpa membuka
+port Apache terus ke seluruh internet.
+
+Persediaan pada KOMPUTER SERVER (komputer yang ada XAMPP dan database):
+1. Pastikan MZR Payroll boleh dibuka di komputer server melalui:
+   http://localhost/mzr_payroll_system/
+2. Install Tailscale dari https://tailscale.com/download pada komputer server.
+3. Sign in dan sambungkan komputer server ke akaun Tailscale anda.
+4. Buka Tailscale dan cari alamat IP Tailscale komputer server. Biasanya bermula
+   dengan 100.x.x.x. Catat alamat tersebut.
+5. Pastikan Apache XAMPP berjalan.
+6. Jika Windows Firewall menghalang sambungan, benarkan Apache/httpd.exe atau
+   benarkan inbound TCP port 80 untuk rangkaian Tailscale. Jangan matikan firewall.
+
+Persediaan pada TELEFON atau LAPTOP di lokasi/Wi-Fi lain:
+1. Install aplikasi Tailscale pada telefon/laptop.
+2. Sign in menggunakan akaun Tailscale yang sama atau akaun yang telah diberi
+   kebenaran dalam rangkaian Tailscale tersebut.
+3. Pastikan Tailscale menunjukkan Connected.
+4. Buka browser dan masukkan:
+   http://100.x.x.x/mzr_payroll_system/
+   Gantikan 100.x.x.x dengan IP Tailscale komputer server yang dicatat tadi.
+
+SYARAT:
+- Komputer server mesti hidup dan tidak sleep.
+- Apache dan MySQL XAMPP mesti berjalan.
+- Tailscale mesti Connected pada server dan peranti pengguna.
+- Jangan kongsi akaun Tailscale server dengan orang yang tidak dibenarkan.
+
+PILIHAN UNTUK OPERASI SEBENAR:
+Untuk penggunaan payroll sebenar oleh ramai pekerja dari pelbagai lokasi,
+lebih baik pindahkan sistem ke hosting/VPS dengan domain sendiri, HTTPS, backup
+DB automatik dan kawalan akses. Jangan forward port 80/3306 router terus ke internet.
+
+TROUBLESHOOTING
+- Jika localhost berfungsi tetapi IP Tailscale tidak: semak Windows Firewall dan
+  pastikan Apache mendengar pada port 80.
+- Jika login memaparkan username/password tidak tepat: semak username/password
+  akaun sedia ada dan format nilai dalam column users.password atau users.password_hash.
+- Jika keluar mesej column tiada: semak struktur jadual users melalui phpMyAdmin >
+  mzr_payroll_db > users > Structure. Jangan tambah column secara rawak.

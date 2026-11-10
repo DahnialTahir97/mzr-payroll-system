@@ -1,0 +1,37 @@
+MZR PAYROLL SYSTEM - VERSI DIPERBAIKI
+======================================
+
+PEMBAIKAN UTAMA
+1. manager_portal.php kini berada di folder utama projek.
+   Ini membaiki ralat 404 apabila Manager log masuk.
+2. Payslip kini memaparkan setiap komponen elaun secara berasingan
+   berdasarkan nama dalam salary_components, termasuk Bonus dan Elaun Makan.
+3. Halaman log masuk dikemas kini dengan reka bentuk lebih kemas dan responsif.
+4. Gaya halaman dalaman dikemas kini untuk sidebar, kad ringkasan, jadual,
+   borang, butang dan paparan telefon.
+5. Kawalan akses Employee pada payslip dikekalkan.
+
+CARA PASANG
+1. Tutup tab sistem payroll.
+2. Pergi ke C:\xampp\htdocs\
+3. Backup folder mzr_payroll_system terlebih dahulu.
+4. Extract semua kandungan ZIP ini ke:
+   C:\xampp\htdocs\mzr_payroll_system
+5. Pilih Replace/Overwrite apabila Windows bertanya.
+6. Pastikan fail ini wujud terus dalam folder utama:
+   manager_portal.php
+   login.php
+   index.php
+   employee_portal.php
+   payslip.php
+7. Buka semula:
+   http://localhost/mzr_payroll_system/login.php
+
+PENTING
+- Jangan extract ke dalam subfolder tambahan seperti:
+  C:\xampp\htdocs\mzr_payroll_system\MZR_Payrolls\
+- Database tidak diubah dan tiada SQL migration baharu diperlukan.
+- Jangan padam folder backup sehingga sistem diuji.
+- Jika nama komponen bonus dalam salary_components ialah "Bonus", ia akan
+  dipaparkan sebagai Bonus. Nama elaun lain dipaparkan mengikut component_name.
+- Pengiraan gaji tidak diubah oleh pembaikan paparan payslip ini.

@@ -1,0 +1,15 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+config/database.local.php
+
+# Local / IDE / backup files
+nbproject/private/
+**/BACKUP/
+**/Save/
+*.zip
+*.zip.zip
+*.sql.gz
+.DS_Store
+Thumbs.db

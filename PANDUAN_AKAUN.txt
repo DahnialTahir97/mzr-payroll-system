@@ -1,0 +1,12 @@
+MZR PAYROLL - LOGIN BERPERANAN
+
+1. Backup folder dan database dahulu.
+2. Jalankan MIGRATION_LOGIN_ROLE.sql di phpMyAdmin. Pastikan database sebenar ialah mzr_payroll_db.
+3. Copy fail patch ke folder projek dan replace fail yang sama.
+4. Akaun Admin/Manager/Pekerja perlu diwujudkan dalam jadual users dengan password_hash PHP (password_hash()). Jangan simpan kata laluan biasa.
+5. Akaun pekerja mesti mempunyai employee_id yang sama dengan employees.id. Pekerja hanya boleh melihat portal dan payslip miliknya.
+6. Admin dan Manager boleh mengakses modul operasi. Hanya Admin patut diberi akses pengurusan akaun.
+
+Contoh menjana password_hash: gunakan PHP: echo password_hash('KataLaluanBaru!', PASSWORD_DEFAULT); kemudian masukkan hasil hash ke users.password_hash.
+
+PERHATIAN: Semak nama kolum users dan employees sebelum migration. Patch ini mengandaikan users mempunyai username,password_hash,full_name,role dan employees mempunyai id,full_name,basic_salary,position.
