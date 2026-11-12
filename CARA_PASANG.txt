@@ -1,32 +1,52 @@
-MZR PAYROLL - ROLE EMPLOYEE / MANAGER / ADMIN
+MZR PAYROLL - PANDUAN DEPLOY VERCEL
+====================================
 
-FUNGSI:
-- Employee: hanya portal slip gaji sendiri. Hanya slip dengan status APPROVED dipaparkan dan boleh dicetak.
-- Manager: dashboard pemantauan, semak slip, Sahkan atau Tolak. Tidak boleh mengubah data pekerja, kehadiran, elaun, payroll atau laporan admin.
-- Admin: fungsi admin sedia ada dikekalkan.
+SEBELUM DEPLOY
+1. Pastikan database MySQL telah diwujudkan di hosting database (contohnya Railway).
+2. Export database MZR sedia ada daripada phpMyAdmin/XAMPP sebagai backup SQL.
+3. Import backup tersebut ke database hosting. Pastikan jadual users, employees,
+   attendance, salary_components dan payroll serta semua column aplikasi tersedia.
+4. Jika belum pernah dibuat, jalankan MIGRATION_LOGIN_ROLE.sql dan
+   MIGRATION_MANAGER_APPROVAL.sql sekali sahaja selepas backup.
+5. Jangan upload fail SQL yang mengandungi data pekerja sebenar ke GitHub.
 
-CARA PASANG:
-1. Tutup tab sistem dan BACKUP folder mzr_payroll_system serta database mzr_payroll_db.
-2. Extract kandungan ZIP ini ke C:\xampp\htdocs\mzr_payroll_system dan pilih Replace/Overwrite untuk fail yang sama.
-3. Buka phpMyAdmin > pilih database mzr_payroll_db > Import > pilih MIGRATION_MANAGER_APPROVAL.sql.
-   Jalankan sekali sahaja. SQL ini menambah approval_status, approved_by dan approved_at pada payroll.
-4. Pastikan jadual users mempunyai kolum: id, username, password_hash, full_name, role, employee_id.
-   Role yang digunakan: admin, manager, employee.
-   Jika role enum belum menyokong manager/employee, jalankan juga MIGRATION_LOGIN_ROLE.sql yang sedia ada dalam projek.
-5. Akaun employee mesti mempunyai employee_id yang sama dengan employees.id. Pastikan satu akaun pekerja dipautkan kepada seorang pekerja.
-6. Cipta akaun manager dalam users dengan role='manager'. Password perlu disimpan menggunakan password_hash() PHP, bukan plain text.
-7. Buka semula sistem dan login:
-   - Admin -> index.php (dashboard admin)
-   - Manager -> manager_portal.php (semak dan sahkan slip)
-   - Employee -> employee_portal.php (slip sendiri yang telah disahkan sahaja)
+DEPLOY VERCEL
+1. Buka https://vercel.com/dashboard.
+2. Pilih Add New > Project.
+3. Import repository DahnialTahir97/mzr-payroll-system.
+4. Framework Preset: Container. Jika sudah auto-detect Container, kekalkan.
+5. Root Directory: ./ (root repository).
+6. Tambah Environment Variables untuk Production:
+   DB_HOST = public MySQL hostname
+   DB_PORT = public MySQL TCP port
+   DB_NAME = database name
+   DB_USER = database username
+   DB_PASS = database password
+7. Klik Deploy. Jika project telah diimport, buat Redeploy selepas ubah env vars.
+8. Buka https://DOMAIN-ANDA/health.php.
+   Berjaya: status=ok dan database=connected.
+   Gagal: semak environment variables dan akses rangkaian database.
 
-ALIRAN:
-Admin jana/kemas kini payroll -> status automatik PENDING.
-Manager semak slip -> klik Sahkan atau Tolak.
-Employee hanya nampak slip yang statusnya APPROVED.
+SESI LOGIN
+Aplikasi menggunakan table mzr_app_sessions di MySQL untuk menyimpan sesi login
+merentas container Vercel. Table ini diwujudkan secara automatik apabila aplikasi
+menerima request pertama. User database perlu ada kebenaran CREATE, SELECT,
+INSERT, UPDATE dan DELETE.
 
-PENTING:
-- Jika payroll dikira semula, status pengesahan akan kembali kepada PENDING supaya Manager perlu semak semula angka terkini.
-- Migration ini tidak memadam data payroll.
-- Uji dahulu dengan satu akaun bagi setiap role.
-- Simpan backup sebelum pemasangan. ZIP ini ialah patch untuk projek sedia ada, bukan salinan penuh sistem.
+UJIAN WAJIB SEBELUM GUNA
+- Admin: login, tambah/edit/padam pekerja, rekod kehadiran, komponen gaji,
+  jana payroll, edit payroll, laporan dan cetak slip.
+- Manager: login, semak payroll, bonus (jika digunakan), sahkan/tolak slip.
+- Employee: login, check-in/check-out, hanya lihat slip sendiri yang approved.
+- Uji logout dan login semula di telefon serta laptop.
+- Pastikan setiap role tidak boleh membuka URL role lain.
+
+PENTING - KETEPATAN PAYROLL
+Kod semasa masih menggunakan anggaran peratusan untuk PERKESO/SIP dan PCB=0.
+Jangan gunakan jumlah ini untuk bayaran gaji sebenar atau pemfailan statutori
+sehingga jadual rasmi KWSP/PERKESO/SIP dan formula PCB telah dimasukkan serta
+disahkan oleh pihak payroll.
+
+JANGAN KONGSI
+Jangan kongsi DB_PASS, password akaun, token atau maklumat pekerja melalui chat
+atau commit ke GitHub.
