@@ -15,3 +15,159 @@
 @media(max-width:900px){.sidebar{width:210px}.main-content{margin-left:210px}.content-wrap{padding:22px}.topbar{padding:0 22px}}
 @media(max-width:680px){.sidebar{position:relative;width:100%;height:auto}.sidebar-bottom{display:none}.main-content{margin-left:0}.content-wrap{padding:17px}.topbar{padding:0 17px}.hero-panel{padding:23px;flex-direction:row}.hero-panel h1{font-size:20px}.login-shell{grid-template-columns:1fr}.login-brand{padding:30px}.login-brand h1{font-size:25px}.login-panel{padding:30px}}
 @media print{.sidebar,.topbar,.footer,.no-print,.btn{display:none!important}.main-content{margin:0}.content-wrap{padding:0}.panel-card{box-shadow:none;border:0}}
+
+
+/* Mobile navigation and employee-management improvements */
+.employee-list-heading { flex-wrap: wrap; }
+.employee-list-heading .search-box { width: min(100%, 280px); }
+.employee-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.employee-actions form { margin: 0; }
+.employee-actions .btn { min-height: 38px; }
+.employee-mobile-hint { color: var(--muted); font-size: 11px; }
+.employee-edit-card { max-width: 820px; }
+.employee-edit-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.employee-edit-actions .btn { min-height: 42px; min-width: 150px; }
+
+@media (max-width: 680px) {
+    .sidebar {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 13px 12px 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+    }
+    .brand {
+        flex: 0 0 100%;
+        padding: 0 7px 10px;
+        font-size: 18px;
+    }
+    .brand-mark { width: 36px; height: 36px; border-radius: 11px; }
+    .side-label { display: none; }
+    .side-link {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 0;
+        margin: 0;
+        padding: 10px 9px;
+        font-size: 12px;
+        line-height: 1.25;
+        background: rgba(255,255,255,.055);
+    }
+    .side-link i { flex: 0 0 18px; }
+    .sidebar-bottom {
+        display: flex;
+        flex: 0 0 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 9px 0 0;
+        border-top: 1px solid rgba(255,255,255,.2);
+    }
+    .sidebar-bottom .user-chip {
+        min-width: 0;
+        flex: 1 1 auto;
+        padding: 4px 2px;
+    }
+    .sidebar-bottom .user-details {
+        min-width: 0;
+        overflow: hidden;
+    }
+    .sidebar-bottom .user-details strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .sidebar-bottom .logout {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 42px;
+        margin: 0;
+        padding: 9px 12px;
+        border: 1px solid rgba(255,255,255,.3);
+        border-radius: 9px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .main-content { margin-left: 0; min-width: 0; }
+    .topbar { min-height: 66px; height: auto; padding: 13px 16px; gap: 10px; }
+    .top-title { font-size: 17px; }
+    .top-date { font-size: 11px; white-space: nowrap; }
+    .content-wrap { padding: 16px 12px; }
+    .page-intro { align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .page-intro h2 { font-size: 20px; }
+    .panel-card { padding: 16px; border-radius: 14px; }
+    .employee-list-heading { align-items: stretch; }
+    .employee-list-heading h3 { width: 100%; }
+    .employee-list-heading .search-box { width: 100%; max-width: none; }
+    .employee-table-wrap { overflow: visible; }
+    .employee-table,
+    .employee-table tbody,
+    .employee-table tbody tr,
+    .employee-table tbody td { display: block; width: 100%; }
+    .employee-table thead { display: none; }
+    .employee-table tbody tr:not(.empty-employee-row) {
+        margin: 0 0 12px;
+        padding: 9px 12px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: #fff;
+        box-shadow: 0 4px 14px rgba(25,45,85,.04);
+    }
+    .employee-table tbody td {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 8px 2px;
+        border: 0;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+    .employee-table tbody td::before {
+        content: attr(data-label);
+        flex: 0 0 105px;
+        color: #8290a8;
+        font-size: 10px;
+        font-weight: 800;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: .35px;
+    }
+    .employee-table tbody td[data-label="Tindakan"] {
+        display: block;
+        padding-top: 11px;
+        margin-top: 5px;
+        border-top: 1px solid var(--line);
+        text-align: left;
+    }
+    .employee-table tbody td[data-label="Tindakan"]::before {
+        display: block;
+        margin-bottom: 9px;
+    }
+    .employee-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .employee-actions .btn { width: 100%; min-height: 42px; padding: 9px 7px; }
+    .employee-table .empty-employee-row td { display: block; text-align: center; }
+    .employee-table .empty-employee-row td::before { display: none; }
+    .employee-edit-actions { display: grid; grid-template-columns: 1fr; }
+    .employee-edit-actions .btn { width: 100%; min-height: 44px; }
+    .footer { padding: 16px 12px; text-align: center; }
+}
+
+@media (max-width: 380px) {
+    .side-link { flex-basis: 100%; }
+    .top-date { display: none; }
+    .employee-table tbody td::before { flex-basis: 88px; }
+    .employee-actions { grid-template-columns: 1fr; }
+}
