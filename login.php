@@ -1,9 +1,6 @@
 <?php
 // MZR FOOD SERVICES - Login (compatible with password OR password_hash column)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/bootstrap.php';
 
 $error = '';
 
