@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once "config/database.php";
+require_once __DIR__ . '/includes/auth.php';
+require_admin();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -12,6 +12,7 @@ $error = "";
 $selectedId = (int)($_POST['employee_id'] ?? $_GET['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_statutory'])) {
+    verify_csrf();
     $employeeId = (int)($_POST['employee_id'] ?? 0);
 
     $dateOfBirth = trim($_POST['date_of_birth'] ?? '');
@@ -156,6 +157,7 @@ button{background:#1769aa;color:#fff;border:0;border-radius:4px;padding:11px 18p
 Isi maklumat berdasarkan rekod sebenar pekerja. Untuk dua soalan sejarah caruman di bawah, pilih “Ya” hanya jika pekerja memang pernah mencarum sebelum umur yang dinyatakan. Jangan membuat andaian.
 </div>
 <form method="POST">
+<input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
 <input type="hidden" name="employee_id" value="<?= (int)$employee['id'] ?>">
 <div class="grid">
 <div>
