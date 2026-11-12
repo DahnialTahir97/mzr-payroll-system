@@ -1,0 +1,21 @@
+name: PHP syntax check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Check PHP syntax
+        run: |
+          find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l
